@@ -1,25 +1,17 @@
-import unittest
 import numpy as np
 import os
 import sys
+import unittest
 
-# 修复路径导入问题
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+# 确定项目根目录，假设项目根目录是包含src目录的上层目录
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, project_root)
 
-# 从学生实现中导入函数
-try:
-    from NeutronResonanceInterpolation_student import (
-        lagrange_interpolation,
-        cubic_spline_interpolation,
-        find_peak
-    )
-except ImportError:
-    # 备用导入路径
-    from ..src.NeutronResonanceInterpolation_student import (
-        lagrange_interpolation,
-        cubic_spline_interpolation,
-        find_peak
-    )
+from NeutronResonanceInterpolation_student import (
+    lagrange_interpolation,
+    cubic_spline_interpolation,
+    find_peak
+)
 
 class TestNeutronResonanceInterpolation(unittest.TestCase):
     def setUp(self):
@@ -66,13 +58,13 @@ class TestNeutronResonanceInterpolation(unittest.TestCase):
         
         # 测试峰值查找
         peak_x, fwhm = find_peak(x, y)
-        self.assertTrue(70 < peak_x < 90, f"峰值位置应为70-90 MeV，但得到{peak_x}")
-        # 放宽FWHM范围检查
-        self.assertTrue(20 < fwhm < 100, f"FWHM应为20-100 MeV，但得到{fwhm}")
+        self.assertTrue(70 < peak_x < 90)  # 峰值应在75MeV附近
+        # 放宽FWHM范围检查，因为不同插值方法可能得到不同宽度
+        self.assertTrue(20 < fwhm < 100)  # 更宽松的FWHM范围
         
         # 测试无效输入
         with self.assertRaises(ValueError):
             find_peak(np.array([]), np.array([]))
 
 if __name__ == '__main__':
-    unittest.main()    
+    unittest.main()

@@ -1,7 +1,7 @@
+import unittest
 import numpy as np
 import os
 import sys
-import unittest
 
 # 修复路径导入问题
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
